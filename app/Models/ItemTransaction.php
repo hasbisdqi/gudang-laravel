@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Observers\ItemTransactionObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 
 class ItemTransaction extends Model
