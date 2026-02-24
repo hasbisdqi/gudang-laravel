@@ -71,6 +71,9 @@ class ItemResource extends Resource
                 TextColumn::make('quantity')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('qty')
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -4,12 +4,14 @@ namespace App\Filament\Resources\ItemTransactions;
 
 use App\Filament\Resources\ItemTransactions\Pages\ManageItemTransactions;
 use App\Models\ItemTransaction;
+use App\TransactionType;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
@@ -17,6 +19,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class ItemTransactionResource extends Resource
 {
@@ -28,17 +31,19 @@ class ItemTransactionResource extends Resource
     {
         return $schema
             ->components([
-                TextInput::make('item_id')
-                    ->required()
-                    ->numeric(),
+                Select::make('item_id')
+                    ->relationship('item', 'name')
+                    ->reactive()
+                    ->required(),
                 TextInput::make('change_in_quantity')
                     ->required()
+                    ->disabled(fn(?int $recordId) => $recordId !== null)
+                    ->maxValue(fn($get) => $get('transaction_type') === TransactionType::OUTGOING ? $get('item.quantity') : 999999)
                     ->numeric(),
-                TextInput::make('transaction_type')
+                Select::make('transaction_type')
+                    ->options(TransactionType::class)
+                    ->reactive()
                     ->required(),
-                TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
             ]);
     }
 
