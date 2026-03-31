@@ -18,21 +18,15 @@ class Item extends Model
         return $this->hasMany(ItemTransaction::class);
     }
 
-
-    public function setQuantityAttribute()
+    public function adjustStock(TransactionType $type, int $qty)
     {
-        return $this->transactions()->get()->sum(function ($transaction) {
-            return $transaction->transaction_type === TransactionType::INCOMING
-                ? $transaction->change_in_quantity
-                : -$transaction->change_in_quantity;
-        });
-    }
-    public function getQtyAttribute()
-    {
-        return $this->transactions()->get()->sum(function ($transaction) {
-            return $transaction->transaction_type === TransactionType::INCOMING
-                ? $transaction->change_in_quantity
-                : -$transaction->change_in_quantity;
-        });
+        if ($type === TransactionType::OUTGOING) {
+            if ($this->quantity < $qty) {
+                return;
+            }
+            $this->decrement('quantity', $qty);
+        } else {
+            $this->increment('quantity', $qty);
+        }
     }
 }

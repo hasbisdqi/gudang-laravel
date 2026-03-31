@@ -12,8 +12,11 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -58,6 +61,16 @@ class ItemResource extends Resource
                 TextEntry::make('updated_at')
                     ->dateTime()
                     ->placeholder('-'),
+                Section::make('Transactions')
+                    ->columnSpanFull()
+                    ->schema([
+                        RepeatableEntry::make('transactions')
+                            ->schema([
+                                ViewEntry::make('transaction_history')
+                                    ->view('filament.resources.items.components.transaction-history'),
+                            ])
+                            ->placeholder('No transactions yet.'),
+                    ]),
             ]);
     }
 

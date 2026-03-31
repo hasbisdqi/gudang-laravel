@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ItemTransactions\Pages;
 
 use App\Filament\Resources\ItemTransactions\ItemTransactionResource;
+use App\Models\Item;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ManageRecords;
 use Illuminate\Support\Facades\Auth;
@@ -15,9 +16,16 @@ class ManageItemTransactions extends ManageRecords
     {
         return [
             CreateAction::make()
-                ->mutateDataUsing(function (array $data): array {
+                ->mutateDataUsing(function ($data) {
                     $data['user_id'] = Auth::id();
                     return $data;
+                })
+                ->after(function ($record) {
+
+                    $record->item->adjustStock(
+                        $record->transaction_type,
+                        $record->change_in_quantity
+                    );
                 }),
         ];
     }
