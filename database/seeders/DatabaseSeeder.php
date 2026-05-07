@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use function Pest\Laravel\call;
+
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -17,7 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $superadmin = User::factory()->create([
             'name' => 'Super Admin',
             'email' => 'superadmin@example.com',
         ]);
@@ -33,5 +35,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin biasa ajah aowkaok',
             'email' => 'admin@example.com',
         ]);
+
+        $this->call(ShieldSeeder::class);
+        $superadmin->assignRole('super_admin');
     }
 }

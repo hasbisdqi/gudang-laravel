@@ -7,6 +7,7 @@ use App\Filament\Widgets\ItemCategoryChart;
 use App\Filament\Widgets\ItemDistributionChart;
 use App\Filament\Widgets\ItemInTable;
 use App\Filament\Widgets\ItemOutTable;
+use App\Filament\Widgets\RecapTable;
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -38,6 +39,7 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->sidebarFullyCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
@@ -51,6 +53,7 @@ class AdminPanelProvider extends PanelProvider
                 ItemCategoryChart::class,
                 ItemInTable::class,
                 ItemOutTable::class,
+                RecapTable::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -68,6 +71,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->databaseNotifications();
     }
 }
