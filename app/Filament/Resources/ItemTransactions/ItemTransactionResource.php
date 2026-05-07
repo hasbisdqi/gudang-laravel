@@ -50,13 +50,16 @@ class ItemTransactionResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('item_id')
-                    ->numeric(),
+                TextEntry::make('item.name')
+                    ->label('Nama Barang')
+                    ->placeholder('-'),
                 TextEntry::make('change_in_quantity')
+                ->label('Jumlah')
                     ->numeric(),
                 TextEntry::make('transaction_type'),
-                TextEntry::make('user_id')
-                    ->numeric(),
+                TextEntry::make('user.name')
+                    ->label('Nama Admin')
+                    ->placeholder('-'),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),
@@ -70,16 +73,20 @@ class ItemTransactionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('item_id')
-                    ->numeric()
+                TextColumn::make('item.name')
+                    ->label('Nama Barang')
+                    ->placeholder('-')
                     ->sortable(),
                 TextColumn::make('change_in_quantity')
+                    ->label('Jumlah')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('transaction_type')
+                    ->label('Tipe Transaksi')   
                     ->searchable(),
-                TextColumn::make('user_id')
-                    ->numeric()
+                TextColumn::make('user.name')
+                    ->label('Nama')
+                    ->placeholder('-')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()

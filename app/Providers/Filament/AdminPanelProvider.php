@@ -2,6 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\GudangOverview;
+use App\Filament\Widgets\ItemCategoryChart;
+use App\Filament\Widgets\ItemDistributionChart;
+use App\Filament\Widgets\ItemInTable;
+use App\Filament\Widgets\ItemOutTable;
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -41,7 +46,11 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
-                FilamentInfoWidget::class,
+                GudangOverview::class,
+                ItemDistributionChart::class,
+                ItemCategoryChart::class,
+                ItemInTable::class,
+                ItemOutTable::class,
             ])
             ->middleware([
                 EncryptCookies::class,
