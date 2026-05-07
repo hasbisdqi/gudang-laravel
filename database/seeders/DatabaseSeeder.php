@@ -23,20 +23,23 @@ class DatabaseSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'superadmin@example.com',
         ]);
-        User::factory()->create([
+        $petugas = User::factory()->create([
             'name' => 'Petugas Gudang',
             'email' => 'petugas@example.com',
         ]);
-        User::factory()->create([
+        $sarpras = User::factory()->create([
             'name' => 'Sarpras',
             'email' => 'sarpras@example.com',
         ]);
-        User::factory()->create([
+        $admin = User::factory()->create([
             'name' => 'Admin biasa ajah aowkaok',
             'email' => 'admin@example.com',
         ]);
 
         $this->call(ShieldSeeder::class);
         $superadmin->assignRole('super_admin');
+        $petugas->assignRole('petugas');
+        $sarpras->assignRole('sarpras');
+        $admin->assignRole('admin');
     }
 }
