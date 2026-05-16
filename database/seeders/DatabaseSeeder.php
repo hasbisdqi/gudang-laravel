@@ -19,21 +19,25 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        $superadmin = User::factory()->create([
+        $superadmin = User::create([
             'name' => 'Super Admin',
             'email' => 'superadmin@example.com',
+            'password' => bcrypt('password'),
         ]);
-        $petugas = User::factory()->create([
+        $petugas = User::create([
             'name' => 'Petugas Gudang',
             'email' => 'petugas@example.com',
+            'password' => bcrypt('password'),
         ]);
-        $sarpras = User::factory()->create([
+        $sarpras = User::create([
             'name' => 'Sarpras',
             'email' => 'sarpras@example.com',
+            'password' => bcrypt('password'),
         ]);
-        $admin = User::factory()->create([
-            'name' => 'Admin biasa ajah aowkaok',
+        $admin = User::create([
+            'name' => 'Admin',
             'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
         ]);
 
         $this->call(ShieldSeeder::class);
