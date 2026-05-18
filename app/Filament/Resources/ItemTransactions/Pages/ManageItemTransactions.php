@@ -18,7 +18,8 @@ class ManageItemTransactions extends ManageRecords
     {
         return [
             ExportAction::make()
-                ->exporter(ItemTransactionExporter::class),
+                ->exporter(ItemTransactionExporter::class)
+                ->visible(fn () => auth()->user()->hasRole('sarpras')),
             CreateAction::make()
                 ->mutateDataUsing(function ($data) {
                     $data['user_id'] = Auth::id();
