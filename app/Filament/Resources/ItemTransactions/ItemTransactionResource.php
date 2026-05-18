@@ -12,6 +12,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
@@ -33,11 +34,27 @@ class ItemTransactionResource extends Resource
                 Select::make('item_id')
                     ->relationship('item', 'name')
                     ->reactive()
+                    ->preload()
+                    ->searchable()
+                    ->createOptionForm(function (Schema $schema) {
+                        return $schema
+                            ->components([
+                                TextInput::make('name')
+                                    ->required(),
+                                Textarea::make('description')
+                                    ->columnSpanFull(),
+                                TextInput::make('quantity')
+                                    ->required()
+                                    ->numeric()
+                                    ->readOnly()
+                                    ->default(0),
+                            ]);
+                    })
                     ->required(),
                 TextInput::make('change_in_quantity')
                     ->required()
-                    ->disabled(fn(?int $recordId) => $recordId !== null)
-                    ->maxValue(fn($get) => $get('transaction_type') === TransactionType::OUTGOING ? $get('item.quantity') : 999999)
+                    ->disabled(fn (?int $recordId) => $recordId !== null)
+                    ->maxValue(fn ($get) => $get('transaction_type') === TransactionType::OUTGOING ? $get('item.quantity') : 999999)
                     ->numeric(),
                 Select::make('transaction_type')
                     ->options(TransactionType::class)
@@ -54,7 +71,7 @@ class ItemTransactionResource extends Resource
                     ->label('Nama Barang')
                     ->placeholder('-'),
                 TextEntry::make('change_in_quantity')
-                ->label('Jumlah')
+                    ->label('Jumlah')
                     ->numeric(),
                 TextEntry::make('transaction_type'),
                 TextEntry::make('user.name')
@@ -82,7 +99,7 @@ class ItemTransactionResource extends Resource
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('transaction_type')
-                    ->label('Tipe Transaksi')   
+                    ->label('Tipe Transaksi')
                     ->searchable(),
                 TextColumn::make('user.name')
                     ->label('Nama')
