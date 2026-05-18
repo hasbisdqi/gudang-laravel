@@ -4,18 +4,20 @@ namespace App\Filament\Resources\Items;
 
 use App\Filament\Resources\Items\Pages\ManageItems;
 use App\Models\Item;
+use App\TransactionType;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -66,8 +68,25 @@ class ItemResource extends Resource
                     ->schema([
                         RepeatableEntry::make('transactions')
                             ->schema([
-                                ViewEntry::make('transaction_history')
-                                    ->view('filament.resources.items.components.transaction-history'),
+                                Grid::make(3)
+                                    ->schema([
+                                        TextEntry::make('item.name')
+                                            ->hiddenLabel()
+                                            ->label('Name'),
+                                        TextEntry::make('transaction_type')
+                                            ->hiddenLabel()
+                                            ->hidden()
+                                            ->label('Type'),
+                                        TextEntry::make('change_in_quantity')
+                                            ->hiddenLabel()
+                                            ->numeric()
+                                            ->color(fn ($state, $record) => $record->transaction_type === 'incoming' ? 'success' : 'danger')
+                                            ->formatStateUsing(fn (int $state, $get) => ($get('transaction_type') === 'incoming' ? '+' : '-') . $state)
+                                            ->label('Quantity'),
+                                        TextEntry::make('created_at')
+                                            ->dateTime()
+                                            ->hiddenLabel(),
+                                    ]),
                             ])
                             ->placeholder('No transactions yet.'),
                     ]),
@@ -82,9 +101,6 @@ class ItemResource extends Resource
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('quantity')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('qty')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('created_at')
