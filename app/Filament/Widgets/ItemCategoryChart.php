@@ -3,10 +3,12 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Item;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 
 class ItemCategoryChart extends ChartWidget
 {
+    use HasWidgetShield;
     protected ?string $heading = 'Jumlah Kategori Barang';
 
     protected function getData(): array

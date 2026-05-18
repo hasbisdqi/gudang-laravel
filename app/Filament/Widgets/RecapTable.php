@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Item;
 use App\Models\ItemTransaction;
 use App\TransactionType;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Actions\BulkActionGroup;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
@@ -18,6 +19,7 @@ use Override;
 
 class RecapTable extends TableWidget
 {
+    use HasWidgetShield;
 
     public function getColumnSpan(): int|string|array
     {

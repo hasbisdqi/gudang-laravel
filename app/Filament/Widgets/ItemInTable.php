@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\ItemTransaction;
 use App\TransactionType;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Actions\BulkActionGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ItemInTable extends TableWidget
 {
+    use HasWidgetShield;
     public function table(Table $table): Table
     {
         return $table

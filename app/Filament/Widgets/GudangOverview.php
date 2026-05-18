@@ -4,12 +4,14 @@ namespace App\Filament\Widgets;
 
 use App\Models\Item;
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class GudangOverview extends StatsOverviewWidget
 {
+    use HasWidgetShield;
     protected function getStats(): array
     {
         $stats = [
